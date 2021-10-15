@@ -1,4 +1,6 @@
 <script>
+  export let src = ''
+
   let playerEl
   let videoEl
   let progressEl
@@ -54,38 +56,32 @@
   />
 </svelte:head>
 
-<div bind:this={playerEl} class="player">
+<article bind:this={playerEl}>
   <video
     bind:this={videoEl}
-    class="player__video viewer"
-    src="652333414.mp4"
+    {src}
     on:click={togglePlay}
     on:play={updateButton}
     on:pause={updateButton}
     on:timeupdate={handleProgress}><track kind="captions" /></video
   >
 
-  <div class="player__controls">
+  <footer>
     <div
       bind:this={progressEl}
-      class="progress"
       on:click={scrub}
       on:mousedown={() => (mousedown = true)}
       on:mouseup={() => (mousedown = false)}
       on:mousemove={e => mousedown && scrub(e)}
     >
-      <div bind:this={progressBarEl} class="progress__filled" />
+      <div bind:this={progressBarEl} />
     </div>
-    <button
-      bind:this={toggleEl}
-      class="player__button toggle"
-      title="Toggle Play"
-      on:click={togglePlay}>►</button
+    <button bind:this={toggleEl} title="Toggle Play" on:click={togglePlay}
+      >►</button
     >
     <input
       type="range"
       name="volume"
-      class="player__slider"
       min="0"
       max="1"
       step="0.05"
@@ -95,24 +91,20 @@
     <input
       type="range"
       name="playbackRate"
-      class="player__slider"
       min="0.5"
       max="2"
       step="0.1"
       value="1"
       on:change={handleRangeUpdate}
     />
-    <button on:click={skip} data-skip="-10" class="player__button">« 10s</button
-    >
-    <button on:click={skip} data-skip="25" class="player__button">25s »</button>
-    <button on:click={makeFullScreen} class="player__button"
-      ><i class="fas fa-expand" /></button
-    >
-  </div>
-</div>
+    <button on:click={skip} data-skip="-10">« 10s</button>
+    <button on:click={skip} data-skip="25">25s »</button>
+    <button on:click={makeFullScreen}><i class="fas fa-expand" /></button>
+  </footer>
+</article>
 
 <style>
-  .player {
+  article {
     max-width: 750px;
     border: 5px solid rgba(0, 0, 0, 0.2);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -122,21 +114,21 @@
   }
 
   /* This css is only applied when fullscreen is active. */
-  .player:fullscreen {
+  article:fullscreen {
     max-width: none;
     width: 100%;
   }
 
-  .player:-webkit-full-screen {
+  article:-webkit-full-screen {
     max-width: none;
     width: 100%;
   }
 
-  .player__video {
+  video {
     width: 100%;
   }
 
-  .player__button {
+  button {
     background: none;
     border: 0;
     line-height: 1;
@@ -148,16 +140,16 @@
     max-width: 50px;
   }
 
-  .player__button:focus {
+  button:focus {
     border-color: #ffc600;
   }
 
-  .player__slider {
+  input[type='range'] {
     width: 10px;
     height: 30px;
   }
 
-  .player__controls {
+  footer {
     display: flex;
     position: absolute;
     bottom: 0;
@@ -168,19 +160,19 @@
     background: rgba(0, 0, 0, 0.1);
   }
 
-  .player:hover .player__controls {
+  article:hover footer {
     transform: translateY(0);
   }
 
-  .player:hover .progress {
+  article:hover div {
     height: 15px;
   }
 
-  .player__controls > * {
+  footer > * {
     flex: 1;
   }
 
-  .progress {
+  div {
     flex: 10;
     position: relative;
     display: flex;
@@ -191,7 +183,7 @@
     cursor: ew-resize;
   }
 
-  .progress__filled {
+  div div {
     width: 50%;
     background: #ffc600;
     flex: 0;
