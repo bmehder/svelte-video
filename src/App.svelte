@@ -125,6 +125,7 @@
   }
 
   video {
+    position: relative;
     width: 100%;
   }
 
