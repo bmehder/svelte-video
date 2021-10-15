@@ -33,7 +33,26 @@
     const scrubTime = (e.offsetX / progressEl.offsetWidth) * videoEl.duration
     videoEl.currentTime = scrubTime
   }
+
+  function makeFullScreen() {
+    if (videoEl.requestFullscreen) {
+      videoEl.requestFullscreen()
+    } else if (videoEl.webkitRequestFullscreen) {
+      /* Safari */
+      videoEl.webkitRequestFullscreen()
+    } else if (videoEl.msRequestFullscreen) {
+      /* IE11 */
+      videoEl.msRequestFullscreen()
+    }
+  }
 </script>
+
+<svelte:head>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+  />
+</svelte:head>
 
 <div bind:this={playerEl} class="player">
   <video
@@ -86,6 +105,9 @@
     <button on:click={skip} data-skip="-10" class="player__button">« 10s</button
     >
     <button on:click={skip} data-skip="25" class="player__button">25s »</button>
+    <button on:click={makeFullScreen} class="player__button"
+      ><i class="fas fa-expand" /></button
+    >
   </div>
 </div>
 
@@ -173,7 +195,7 @@
     width: 50%;
     background: #ffc600;
     flex: 0;
-    flex-basis: 50%;
+    flex-basis: 0%;
   }
 
   /* unholy css to style input type="range" */
